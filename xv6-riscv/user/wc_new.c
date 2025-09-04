@@ -71,7 +71,7 @@ main(int argc, char *argv[])
     break;
   }
 
-  printf("-l: %d, -w: %d, -c: %d\n", flags[0], flags[1], flags[2]);
+  //printf("-l: %d, -w: %d, -c: %d\n", flags[0], flags[1], flags[2]);
 
 
   // if | then read from 0. to know if using | then check argv for the of any files (ie args that do not have a "-" in them)
