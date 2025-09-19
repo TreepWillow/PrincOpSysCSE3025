@@ -15,5 +15,3 @@ int main(int argc, char *argv[]){
     exec(argv[2], argv + 2);
     return 0;
 }
-// TODO - need to implement it into the user runnable commands
-// added to make file

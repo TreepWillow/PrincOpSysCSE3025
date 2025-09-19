@@ -115,3 +115,51 @@ sys_trace(void)
   myproc()->trace_mask = mask;
   return 0;
 }
+
+uint64
+sys_set_priority(void)
+{
+  struct proc proc[NPROC];
+  int pid;
+  int nice_value;
+  struct proc *p;
+
+  argint(0,&pid);
+  argint(1,&nice_value); // puts the value of a1 register into teh nice_value var
+
+  for(p = proc; p < &proc[NPROC]; p++){ // kkill code used as example
+    acquire(&p->lock);
+    if(p->pid == pid){
+      p->nice = nice_value;
+      release(&p->lock);
+      return 0;
+    }
+    release(&p->lock);
+  }
+  return -1;
+  
+}
+
+
+uint64
+sys_get_priority(void)
+{
+  struct proc proc[NPROC];
+  int pid;
+  struct proc *p;
+  int nice_val;
+
+  argint(0,&pid);
+
+  for(p = proc; p < &proc[NPROC]; p++){ // kkill code used as example
+    acquire(&p->lock);
+    if(p->pid == pid){
+      nice_val = p->nice;
+      release(&p->lock);
+      return nice_val;
+    }
+    release(&p->lock);
+  }
+  return -1;
+  
+}

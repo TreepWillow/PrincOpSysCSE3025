@@ -276,6 +276,9 @@ kfork(void)
   // copy trace_mask to teh new process 
   np->trace_mask = p->trace_mask;
 
+  // set nice value (prioity value) to 20 by default
+  np->nice = 20;
+
   // copy saved user registers.
   *(np->trapframe) = *(p->trapframe);
 

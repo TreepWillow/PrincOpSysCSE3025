@@ -123,6 +123,9 @@ mkfs/mkfs: mkfs/mkfs.c $K/fs.h $K/param.h
 .PRECIOUS: %.o
 
 UPROGS=\
+	$U/_lab2e3test\
+	$U/_get_priority\
+	$U/_set_priority\
 	$U/_trace\
 	$U/_cat\
 	$U/_echo\

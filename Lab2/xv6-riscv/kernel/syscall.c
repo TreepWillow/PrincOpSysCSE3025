@@ -102,6 +102,8 @@ extern uint64 sys_link(void);
 extern uint64 sys_mkdir(void);
 extern uint64 sys_close(void);
 extern uint64 sys_trace(void);
+extern uint64 sys_set_priority(void);
+extern uint64 sys_get_priority(void);
 
 // An array mapping syscall numbers from syscall.h
 // to the function that handles the system call.
@@ -128,11 +130,42 @@ static uint64 (*syscalls[])(void) = {
 [SYS_mkdir]   sys_mkdir,
 [SYS_close]   sys_close,
 [SYS_trace]   sys_trace,
+[SYS_set_priority]   sys_set_priority,
+[SYS_get_priority]   sys_get_priority,
 };
 
 void
 syscall(void)
 {
+  char *syscall_name[] = {
+
+    "Slot For the Zero to be ocuppied",
+    "fork",
+    "exit",
+    "wait",
+    "pipe",
+    "read",
+    "kill",
+    "exec",
+    "fstat",
+    "chdir",
+    "dup",
+    "getpid",
+    "sbrk",
+    "pause",
+    "uptime",
+    "open",
+    "write",
+    "mknod",
+    "unlink",
+    "link",
+    "mkdir",
+    "close",
+    "trace",
+    "set_priority",
+    "get_priority",
+};
+  
   int num;
   struct proc *p = myproc();
 
@@ -148,6 +181,6 @@ syscall(void)
   }
 
   if (p->trace_mask & (1 << num)) {
-    printf("%d: syscall %s -> %ld\n",p->pid,p->name,p->trapframe->a0);
+    printf("%d: syscall %s -> %ld\n",p->pid,syscall_name[num],p->trapframe->a0);
   }
 }

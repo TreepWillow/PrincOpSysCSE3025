@@ -105,4 +105,5 @@ struct proc {
   struct inode *cwd;           // Current directory
   char name[16];               // Process name (debugging)
   int trace_mask;              // Custom var used for the trace syscall
+  int nice;                    // Priority level (high number is low priority 0-39)
 };
