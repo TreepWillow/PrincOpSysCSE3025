@@ -16,6 +16,6 @@ Difficulties:
 - E1: gdb not working anymore after having it working
     - I was typing kernel as kernal
 - E2: user.h was giving me error with uint instead of unsigned int so I switched them and it worked
-
+- E2: my syscall was erroring becuase I did not add a line to the prototypes
 
 Summary
