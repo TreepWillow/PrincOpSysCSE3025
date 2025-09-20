@@ -42,3 +42,8 @@ entry("getpid");
 entry("sbrk");
 entry("pause");
 entry("uptime");
+
+entry("trace");
+
+entry("set_priority");
+entry("get_priority"); 

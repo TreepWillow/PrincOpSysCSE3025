@@ -105,3 +105,36 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
+
+// implementing systrace to kernel
+uint64
+sys_trace(void)
+{
+  int mask;
+  argint(0, &mask);
+  myproc()->tracemask = mask;
+  return 0;
+}
+
+// Implementing priority functions to kernel
+uint64
+sys_set_priority(void)
+{
+  int pid;
+  int prio;
+  
+  argint(0, &pid);     // fetch first argument (pid)
+  argint(1, &prio);    // fetch second argument (priority)
+  
+  return set_priority(pid, prio);
+}
+
+uint64
+sys_get_priority(void)
+{
+  int pid;
+  
+  argint(0, &pid);     // fetch first argument (pid)
+  
+  return get_priority(pid);
+}
