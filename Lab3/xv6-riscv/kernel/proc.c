@@ -110,9 +110,10 @@ static struct proc*
 allocproc(void)
 {
   struct proc *p;
-
+ 
   for(p = proc; p < &proc[NPROC]; p++) {
     acquire(&p->lock);
+    p->nice = 20;
     if(p->state == UNUSED) {
       goto found;
     } else {
@@ -271,6 +272,9 @@ kfork(void)
     release(&np->lock);
     return -1;
   }
+
+  np->tracemask = myproc()->tracemask; // propogate the trace mask to children
+  
   np->sz = p->sz;
 
   // copy saved user registers.
@@ -684,4 +688,41 @@ procdump(void)
     printf("%d %s %s", p->pid, state, p->name);
     printf("\n");
   }
+}
+
+int
+set_priority(int pid, int prio)
+{
+  struct proc *p;
+  
+  if (prio < 0) prio = 0;
+  if (prio > 39) prio = 39;
+  
+  for (p = proc; p < &proc[NPROC]; p++) {
+    acquire(&p->lock);
+    if (p->pid == pid) {
+      p->nice = prio;
+      release(&p->lock);
+      return 0;
+    }
+    release(&p->lock);
+  }
+  return -1;
+}
+
+int
+get_priority(int pid)
+{
+  struct proc *p;
+    
+  for (p = proc; p < &proc[NPROC]; p++) {
+    acquire(&p->lock);
+    if (p->pid == pid) {
+      int val = p->nice;
+      release(&p->lock);
+      return val;
+    }
+    release(&p->lock);
+  }
+  return -1;     // pid not found
 }

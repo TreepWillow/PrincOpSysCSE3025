@@ -47,3 +47,10 @@ void printf(const char*, ...) __attribute__ ((format (printf, 1, 2)));
 // umalloc.c
 void* malloc(uint);
 void free(void*);
+
+//add trace ssycall to user programs.
+int trace(int mask); 
+
+//add priority functions to user programs
+int set_priority(int pid, int prio);
+int get_priority(int pid); 
