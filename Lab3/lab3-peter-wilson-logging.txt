@@ -1,0 +1,23 @@
+ESTIMATE: 
+----------------------------------------------------------------------------------------
+Date	    StTime	    TimeSp	    LabPrt	    Work Completed
+9/20/25     4:00pm	    ????	    1	        getting repo setup and lab2e3 added
+
+-----------------------------------------------------------------------------------------
+TOTAL:
+
+Difficulties:
+
+
+Summary
+
+
+How to make a syscall
+- in User add a .c file
+- In makeFile add in UPROGS the .c file name
+- in user.h add prototype
+- in usys.pl add entry
+- in syscall.h add a #define for the syscall
+- in sysproc.c add the syscall code
+- in syscall.c add syscall to array and prototype
+- edit other files if needed (like proc.c when kfork needs to be edited or proc.h when you need to add a varible)
