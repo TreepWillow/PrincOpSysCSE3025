@@ -138,3 +138,9 @@ sys_get_priority(void)
   
   return get_priority(pid);
 }
+
+uint64
+sys_cps(void)
+{
+  return cps();
+}

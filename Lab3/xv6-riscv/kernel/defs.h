@@ -186,3 +186,6 @@ void            virtio_disk_intr(void);
 
 int set_priority(int pid, int prio);
 int get_priority(int pid); 
+
+// cps.c
+int cps(void);

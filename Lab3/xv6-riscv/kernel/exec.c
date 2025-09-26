@@ -120,6 +120,7 @@ kexec(char *path, char **argv)
   // argc is returned via the system call return
   // value, which goes in a0.
   p->trapframe->a1 = sp;
+  p->nice = 10; // set the nice value to 10
 
   // Save program name for debugging.
   for(last=s=path; *s; s++)

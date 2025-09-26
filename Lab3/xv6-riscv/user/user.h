@@ -54,3 +54,6 @@ int trace(int mask);
 //add priority functions to user programs
 int set_priority(int pid, int prio);
 int get_priority(int pid); 
+
+// cps syscall print all process statuses
+int cps(void);

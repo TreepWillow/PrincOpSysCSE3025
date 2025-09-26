@@ -23,3 +23,4 @@
 #define SYS_trace  22
 #define SYS_set_priority 23
 #define SYS_get_priority 24
+#define SYS_cps 25

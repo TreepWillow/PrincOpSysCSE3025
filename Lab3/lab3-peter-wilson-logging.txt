@@ -1,23 +1,35 @@
 ESTIMATE: 
 ----------------------------------------------------------------------------------------
 Date	    StTime	    TimeSp	    LabPrt	    Work Completed
-9/20/25     4:00pm	    ????	    1	        getting repo setup and lab2e3 added
+9/20/25     4:00pm	    1:20	    1	        getting repo setup and lab2e3
+9/26/25     10:15am     1:35        1&2         working on E1 and E2. aded syscalls and User progs. tested successfully
 
 -----------------------------------------------------------------------------------------
 TOTAL:
 
+
+
+
 Difficulties:
+- E1: In sysproc.c my line of return cps(); gives error of implicit declaration of function
+    - needed to put a prototype in defs.h for the cps function in proc.c
 
 
 Summary
 
 
-How to make a syscall
+
+
+User prog
 - in User add a .c file
 - In makeFile add in UPROGS the .c file name
+- add needed libraries to the .c
+How to make a syscall
 - in user.h add prototype
 - in usys.pl add entry
 - in syscall.h add a #define for the syscall
-- in sysproc.c add the syscall code
+- in sysproc.c add the call of your syscall and give it the args and return its value
 - in syscall.c add syscall to array and prototype
+- in proc.c add your syscall code
+- in defs.h add prototype of proc.c function
 - edit other files if needed (like proc.c when kfork needs to be edited or proc.h when you need to add a varible)

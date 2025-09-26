@@ -1,0 +1,31 @@
+Copy and Paste Outputs into here based on exersise
+
+E1 (Peter) **************************************************************************
+name     pid     state   priority 
+init     1       SLEEEPING       20 
+sh       2       SLEEEPING       20 
+ps       3       RUNNING         20
+
+E2 (Peter) ***************************************************************************
+$ lab3test
+Parent 3 creatingC chilhild 4 d c4re
+ated
+$ ps 
+name     pid     state   priority 
+init     1       SLEEEPING       20 
+sh       2       SLEEEPING       20 
+ps       5       RUNNING         20 
+lab3test         4       RUNNING         20 
+$ nice 4 5
+$ ps
+name     pid     state   priority 
+init     1       SLEEEPING       20 
+sh       2       SLEEEPING       20 
+ps       7       RUNNING         20 
+lab3test         4       RUNNING         5 
+$ Child 4 terminated
+
+
+E3 (<Who worked on it>) *******************************************************************************************
+
+

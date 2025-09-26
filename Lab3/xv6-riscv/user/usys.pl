@@ -47,3 +47,5 @@ entry("trace");
 
 entry("set_priority");
 entry("get_priority"); 
+
+entry("cps");
