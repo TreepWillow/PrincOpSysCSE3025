@@ -149,6 +149,9 @@ UPROGS=\
 	$U/_dorphan\
 	$U/_trace\
 	$U/_lab2e3test\
+	$U/_lab3test2\
+	$U/_st_priority\
+	$U/_lab3test3\
 
 fs.img: mkfs/mkfs README $(UPROGS)
 	mkfs/mkfs fs.img README $(UPROGS)

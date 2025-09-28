@@ -1,0 +1,32 @@
+ESTIMATE of time to complete lab: 3 hours
+      Start   Time    Lab   
+Date  Time    Spent   Part   Work Completed
+------------------------------------------------------------------------------
+9/27  4:19    1:15    3      Implemented parent wait into program.
+9/27  5:35    0:56    4      Finish draft of priority schedule function.
+9/27  6:32    0:48    4      Debugging of priority scheduling for output.
+9/28  1:40    0:49    5      Created lab3test3.c to test priority scheduling.
+9/28  2:50    0:20    5      Finished Debugging of priority scheduling.
+              -----
+	      4:08 TOTAL time spent
+Difficulties:
+
+The most challenging part of the lab I worked on was getting the valid
+output for execises. For clarification, either the processes would end
+to early and not be outputed when running ps or the process delay ps
+process and will wait until the child processes finish execution then
+print the remaining processes.
+
+In order to resolve this, I would either have to run ps in tandem with
+the test programs: lab3test3 &; ps. Another solution would be to
+change the processes nice value on run time so that they don't take
+priority over the ps program.
+
+Managing the priorities was the most confusing of the lab. Otherwise,
+the remaining exercises were fairly straightforward as while my
+partern, Peter, focused on the first half of the lab, I worked on the
+second half.
+
+Lab3test2 was not very different compared to the orginal say for a few
+new lines of code implemented but an entirely new test file was
+created to properly show the priority scheduling as it executes.

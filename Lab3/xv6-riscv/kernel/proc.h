@@ -85,6 +85,8 @@ enum procstate { UNUSED, USED, SLEEPING, RUNNABLE, RUNNING, ZOMBIE };
 struct proc {
   struct spinlock lock;
 
+  int priority; 
+
   int tracemask; // New: bitmask for which syscalls to trace...
   int nice; // process priority
 

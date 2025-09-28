@@ -26,6 +26,226 @@ lab3test         4       RUNNING         5
 $ Child 4 terminated
 
 
-E3 (<Who worked on it>) *******************************************************************************************
+E3 (Juan) *******************************************************************************************
+xv6 kernel is booting
 
-
+hart 1 starting
+hart 2 starting
+init: starting sh
+$ lab3test2 &; lab3test2 &; lab3test2 &
+$ ps
+name 	 pid 	 state 	 priority 
+init 	 1 	 SLEEEPING 	 20 
+sh 	 2 	 SLEEEPING 	 20 
+lab3test2 	 9 	 RUNNABLE 	 20 
+lab3test2 	 8 	 SLEEEPING 	 20 
+lab3test2 	 5 	 SLEEEPING 	 20 
+lab3test2 	 7 	 SLEEEPING 	 20 
+lab3test2 	 10 	 RUNNING 	 20 
+lab3test2 	 11 	 RUNNABLE 	 20 
+ps 	 12 	 RUNNING 	 10 
+$ ps
+name 	 pid 	 state 	 priority 
+init 	 1 	 SLEEEPING 	 20 
+sh 	 2 	 SLEEEPING 	 20 
+lab3test2 	 9 	 RUNNABLE 	 20 
+lab3test2 	 8 	 SLEEEPING 	 20 
+lab3test2 	 5 	 SLEEEPING 	 20 
+lab3test2 	 7 	 SLEEEPING 	 20 
+lab3test2 	 10 	 RUNNING 	 20 
+lab3test2 	 11 	 RUNNING 	 20 
+ps 	 13 	 RUNNING 	 10 
+$ ps
+name 	 pid 	 state 	 priority 
+init 	 1 	 SLEEEPING 	 20 
+sh 	 2 	 SLEEEPING 	 20 
+ps 	 14 	 RUNNING 	 10 
+$ lab3test2 &; lab3test2 &; lab3test2 &
+$ ps
+name 	 pid 	 state 	 priority 
+init 	 1 	 SLEEEPING 	 20 
+sh 	 2 	 SLEEEPING 	 20 
+lab3test2 	 21 	 RUNNING 	 20 
+lab3test2 	 20 	 SLEEEPING 	 20 
+lab3test2 	 17 	 SLEEEPING 	 20 
+lab3test2 	 19 	 SLEEEPING 	 20 
+lab3test2 	 22 	 RUNNING 	 20 
+lab3test2 	 23 	 RUNNING 	 20 
+ps 	 24 	 RUNNING 	 10 
+$ ps
+name 	 pid 	 state 	 priority 
+init 	 1 	 SLEEEPING 	 20 
+sh 	 2 	 SLEEEPING 	 20 
+lab3test2 	 21 	 RUNNABLE 	 20 
+lab3test2 	 20 	 SLEEEPING 	 20 
+lab3test2 	 17 	 SLEEEPING 	 20 
+lab3test2 	 19 	 SLEEEPING 	 20 
+lab3test2 	 22 	 RUNNABLE 	 20 
+lab3test2 	 23 	 RUNNING 	 20 
+ps 	 25 	 RUNNING 	 10 
+$ ps
+name 	 pid 	 state 	 priority 
+init 	 1 	 SLEEEPING 	 20 
+sh 	 2 	 SLEEEPING 	 20 
+lab3test2 	 21 	 RUNNING 	 20 
+lab3test2 	 20 	 SLEEEPING 	 20 
+lab3test2 	 17 	 SLEEEPING 	 20 
+lab3test2 	 19 	 SLEEEPING 	 20 
+lab3test2 	 22 	 RUNNING 	 20 
+lab3test2 	 23 	 RUNNING 	 20 
+ps 	 26 	 RUNNING 	 10 
+$ ps
+name 	 pid 	 state 	 priority 
+init 	 1 	 SLEEEPING 	 20 
+sh 	 2 	 SLEEEPING 	 20 
+lab3test2 	 21 	 RUNNING 	 20 
+lab3test2 	 20 	 SLEEEPING 	 20 
+lab3test2 	 17 	 SLEEEPING 	 20 
+lab3test2 	 19 	 SLEEEPING 	 20 
+lab3test2 	 22 	 RUNNING 	 20 
+lab3test2 	 23 	 RUNNABLE 	 20 
+ps 	 27 	 RUNNING 	 10 
+$ ps
+name 	 pid 	 state 	 priority 
+init 	 1 	 SLEEEPING 	 20 
+sh 	 2 	 SLEEEPING 	 20 
+lab3test2 	 21 	 RUNNING 	 20 
+lab3test2 	 20 	 SLEEEPING 	 20 
+lab3test2 	 17 	 SLEEEPING 	 20 
+lab3test2 	 19 	 SLEEEPING 	 20 
+lab3test2 	 22 	 RUNNABLE 	 20 
+lab3test2 	 23 	 RUNNING 	 20 
+ps 	 28 	 RUNNING 	 10 
+$ ps
+name 	 pid 	 state 	 priority 
+init 	 1 	 SLEEEPING 	 20 
+sh 	 2 	 SLEEEPING 	 20 
+lab3test2 	 21 	 RUNNING 	 20 
+lab3test2 	 20 	 SLEEEPING 	 20 
+lab3test2 	 17 	 SLEEEPING 	 20 
+lab3test2 	 19 	 SLEEEPING 	 20 
+lab3test2 	 22 	 RUNNING 	 20 
+lab3test2 	 23 	 RUNNABLE 	 20 
+ps 	 29 	 RUNNING 	 10 
+$ ps
+name 	 pid 	 state 	 priority 
+init 	 1 	 SLEEEPING 	 20 
+sh 	 2 	 SLEEEPING 	 20 
+lab3test2 	 21 	 RUNNING 	 20 
+lab3test2 	 20 	 SLEEEPING 	 20 
+lab3test2 	 17 	 SLEEEPING 	 20 
+lab3test2 	 19 	 SLEEEPING 	 20 
+lab3test2 	 22 	 RUNNABLE 	 20 
+lab3test2 	 23 	 RUNNING 	 20 
+ps 	 30 	 RUNNING 	 10 
+$ ps
+name 	 pid 	 state 	 priority 
+init 	 1 	 SLEEEPING 	 20 
+sh 	 2 	 SLEEEPING 	 20 
+lab3test2 	 21 	 RUNNING 	 20 
+lab3test2 	 20 	 SLEEEPING 	 20 
+lab3test2 	 17 	 SLEEEPING 	 20 
+lab3test2 	 19 	 SLEEEPING 	 20 
+lab3test2 	 22 	 RUNNABLE 	 20 
+lab3test2 	 23 	 RUNNING 	 20 
+ps 	 31 	 RUNNING 	 10 
+$ ps
+name 	 pid 	 state 	 priority 
+init 	 1 	 SLEEEPING 	 20 
+sh 	 2 	 SLEEEPING 	 20 
+lab3test2 	 21 	 RUNNABLE 	 20 
+lab3test2 	 20 	 SLEEEPING 	 20 
+lab3test2 	 17 	 SLEEEPING 	 20 
+lab3test2 	 19 	 SLEEEPING 	 20 
+lab3test2 	 22 	 RUNNING 	 20 
+lab3test2 	 23 	 RUNNING 	 20 
+ps 	 32 	 RUNNING 	 10 
+$ ps
+name 	 pid 	 state 	 priority 
+init 	 1 	 SLEEEPING 	 20 
+sh 	 2 	 SLEEEPING 	 20 
+lab3test2 	 21 	 RUNNING 	 20 
+lab3test2 	 20 	 SLEEEPING 	 20 
+lab3test2 	 17 	 SLEEEPING 	 20 
+lab3test2 	 19 	 SLEEEPING 	 20 
+lab3test2 	 22 	 RUNNING 	 20 
+lab3test2 	 23 	 RUNNING 	 20 
+ps 	 33 	 RUNNING 	 10 
+$ ps
+name 	 pid 	 state 	 priority 
+init 	 1 	 SLEEEPING 	 20 
+sh 	 2 	 SLEEEPING 	 20 
+lab3test2 	 21 	 RUNNABLE 	 20 
+lab3test2 	 20 	 SLEEEPING 	 20 
+lab3test2 	 17 	 SLEEEPING 	 20 
+lab3test2 	 19 	 SLEEEPING 	 20 
+lab3test2 	 22 	 RUNNING 	 20 
+lab3test2 	 23 	 RUNNING 	 20 
+ps 	 34 	 RUNNING 	 10 
+$ ps
+name 	 pid 	 state 	 priority 
+init 	 1 	 SLEEEPING 	 20 
+sh 	 2 	 SLEEEPING 	 20 
+ps 	 35 	 RUNNING 	 10 
+$ ps
+name 	 pid 	 state 	 priority 
+init 	 1 	 SLEEEPING 	 20 
+sh 	 2 	 SLEEEPING 	 20 
+ps 	 36 	 RUNNING 	 10 
+$ 
+E4&5 (Juan) **************************************************************************
+$ lab3test3 &; ps
+name 	 pid 	 state 	 priority 
+init 	 1 	 SLEEEPING 	 20 
+sh 	 2 	 SLEEEPING 	 20 
+ps 	 60 	 RUNNING 	 20 
+lab3test3 	 63 	 RUNNING 	 20 
+lab3test3 	 62 	 SLEEEPING 	 20 
+lab3test3 	 64 	 RUNNING 	 16 
+lab3test3 	 65 	 RUNNABLE 	 20 
+lab3test3 	 66 	 RUNNABLE 	 20 
+lab3test3 	 67 	 RUNNABLE 	 20 
+$ ps
+name 	 pid 	 state 	 priority 
+init 	 1 	 SLEEEPING 	 20 
+sh 	 2 	 SLEEEPING 	 20 
+ps 	 68 	 RUNNING 	 10 
+lab3test3 	 63 	 RUNNABLE 	 20 
+lab3test3 	 62 	 SLEEEPING 	 20 
+lab3test3 	 64 	 RUNNING 	 16 
+lab3test3 	 65 	 RUNNABLE 	 21 
+lab3test3 	 66 	 RUNNABLE 	 26 
+lab3test3 	 67 	 RUNNABLE 	 31 
+$ ps
+name 	 pid 	 state 	 priority 
+init 	 1 	 SLEEEPING 	 20 
+sh 	 2 	 SLEEEPING 	 20 
+ps 	 69 	 RUNNING 	 10 
+lab3test3 	 63 	 RUNNING 	 20 
+lab3test3 	 62 	 SLEEEPING 	 20 
+lab3test3 	 64 	 RUNNING 	 16 
+lab3test3 	 65 	 RUNNABLE 	 21 
+lab3test3 	 66 	 RUNNABLE 	 26 
+lab3test3 	 67 	 RUNNABLE 	 31 
+$ ps
+name 	 pid 	 state 	 priority 
+init 	 1 	 SLEEEPING 	 20 
+sh 	 2 	 SLEEEPING 	 20 
+ps 	 70 	 RUNNING 	 10 
+lab3test3 	 62 	 SLEEEPING 	 20 
+lab3test3 	 66 	 RUNNING 	 26 
+lab3test3 	 67 	 RUNNING 	 31 
+$ ps
+name 	 pid 	 state 	 priority 
+init 	 1 	 SLEEEPING 	 20 
+sh 	 2 	 SLEEEPING 	 20 
+ps 	 71 	 RUNNING 	 10 
+lab3test3 	 62 	 SLEEEPING 	 20 
+lab3test3 	 66 	 RUNNING 	 26 
+lab3test3 	 67 	 RUNNING 	 31 
+$ ps
+name 	 pid 	 state 	 priority 
+init 	 1 	 SLEEEPING 	 20 
+sh 	 2 	 SLEEEPING 	 20 
+ps 	 72 	 RUNNING 	 10 
+$ 
