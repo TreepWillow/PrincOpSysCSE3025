@@ -7,8 +7,9 @@ Date  Time    Spent   Part   Work Completed
 9/27  6:32    0:48    4      Debugging of priority scheduling for output.
 9/28  1:40    0:49    5      Created lab3test3.c to test priority scheduling.
 9/28  2:50    0:20    5      Finished Debugging of priority scheduling.
+9/29  4:30    0:30    3&5    Added Descriptions to the output of RR and Priority scheduling. Also finished peer evaluation. 
               -----
-	      4:08 TOTAL time spent
+	      4:38 TOTAL time spent
 Difficulties:
 
 The most challenging part of the lab I worked on was getting the valid

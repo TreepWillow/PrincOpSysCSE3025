@@ -37,34 +37,6 @@ $ ps
 name 	 pid 	 state 	 priority 
 init 	 1 	 SLEEEPING 	 20 
 sh 	 2 	 SLEEEPING 	 20 
-lab3test2 	 9 	 RUNNABLE 	 20 
-lab3test2 	 8 	 SLEEEPING 	 20 
-lab3test2 	 5 	 SLEEEPING 	 20 
-lab3test2 	 7 	 SLEEEPING 	 20 
-lab3test2 	 10 	 RUNNING 	 20 
-lab3test2 	 11 	 RUNNABLE 	 20 
-ps 	 12 	 RUNNING 	 10 
-$ ps
-name 	 pid 	 state 	 priority 
-init 	 1 	 SLEEEPING 	 20 
-sh 	 2 	 SLEEEPING 	 20 
-lab3test2 	 9 	 RUNNABLE 	 20 
-lab3test2 	 8 	 SLEEEPING 	 20 
-lab3test2 	 5 	 SLEEEPING 	 20 
-lab3test2 	 7 	 SLEEEPING 	 20 
-lab3test2 	 10 	 RUNNING 	 20 
-lab3test2 	 11 	 RUNNING 	 20 
-ps 	 13 	 RUNNING 	 10 
-$ ps
-name 	 pid 	 state 	 priority 
-init 	 1 	 SLEEEPING 	 20 
-sh 	 2 	 SLEEEPING 	 20 
-ps 	 14 	 RUNNING 	 10 
-$ lab3test2 &; lab3test2 &; lab3test2 &
-$ ps
-name 	 pid 	 state 	 priority 
-init 	 1 	 SLEEEPING 	 20 
-sh 	 2 	 SLEEEPING 	 20 
 lab3test2 	 21 	 RUNNING 	 20 
 lab3test2 	 20 	 SLEEEPING 	 20 
 lab3test2 	 17 	 SLEEEPING 	 20 
@@ -187,12 +159,16 @@ name 	 pid 	 state 	 priority
 init 	 1 	 SLEEEPING 	 20 
 sh 	 2 	 SLEEEPING 	 20 
 ps 	 35 	 RUNNING 	 10 
-$ ps
-name 	 pid 	 state 	 priority 
-init 	 1 	 SLEEEPING 	 20 
-sh 	 2 	 SLEEEPING 	 20 
-ps 	 36 	 RUNNING 	 10 
-$ 
+
+Observation: I do belive this is a valid representation 
+of round robin scheduling withint the operating system. 
+As we can see, process pid 21, 22, and 23 switch between 
+RUNNING and RUNNABLE as the operating system executes their
+instruction until eventually each process finishes their
+instrucionts. At all times, there are at least two of the
+processes are in the RUNNING state while one remains in the 
+RUNNABLE state. 
+
 E4&5 (Juan) **************************************************************************
 $ lab3test3 &; ps
 name 	 pid 	 state 	 priority 
@@ -249,3 +225,19 @@ init 	 1 	 SLEEEPING 	 20
 sh 	 2 	 SLEEEPING 	 20 
 ps 	 72 	 RUNNING 	 10 
 $ 
+
+Observations: I do believe this is a good view of
+the priority scheduling system in play in the operating
+system. I would like to note that I created an entirely
+new user program called "lab3test3" to better obtain 
+outputs for the exercise. 
+As we observe the processes running within the system, 
+several with varying priority/nice values. As the processes
+begin their execution, we can see the processes with a lower
+priority/nice value begin running with the remaining processes
+being in the RUNNABLE state. As the processes finish their 
+execution, the next process with the lowest nice value will
+enter the RUNNING state until it finishes execution. 
+I should note that in the lab3test3 file, it changes the 
+priority/nice value for each process on start up so the viewable
+changes are a bit delayed. 
