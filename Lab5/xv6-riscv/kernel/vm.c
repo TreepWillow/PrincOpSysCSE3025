@@ -205,7 +205,10 @@ uvmunmap(pagetable_t pagetable, uint64 va, uint64 npages, int do_free)
       continue;
     if(do_free){
       uint64 pa = PTE2PA(*pte);
-      kfree((void*)pa);
+      // --- Juan: //
+      // kfree((void*)pa); (original)
+      kref_dec(pa); // new: decrements the refcount and only frees the
+                    // pages when the last reference disappears.
     }
     *pte = 0;
   }
@@ -320,6 +323,69 @@ uvmcopy(pagetable_t old, pagetable_t new, uint64 sz)
 
  err:
   uvmunmap(new, 0, i / PGSIZE, 1);
+  return -1;
+}
+
+// ---- Juan: uvmcopy modified for uvmcopy_cow ---- //
+// forward declarations (provided by kalloc.c)
+extern void kref_inc(uint64 pa);
+extern void kref_dec(uint64 pa);
+
+int
+uvmcopy_cow(pagetable_t old, pagetable_t new, uint64 sz)
+{
+  pte_t *pte;
+  uint64 pa, i;
+  uint flags;
+
+  for(i = 0; i < sz; i += PGSIZE){
+    if((pte = walk(old, i, 0)) == 0)
+      continue;   // page table entry hasn't been allocated
+    if((*pte & PTE_V) == 0)
+      continue;   // not mapped
+
+    // Only copy user mappings
+    if((*pte & PTE_U) == 0)
+      continue;
+
+    pa = PTE2PA(*pte);
+    flags = PTE_FLAGS(*pte);
+
+    // If the parent's mapping is writable, convert it to read-only in parent,
+    // and map the child read-only as well (clear PTE_W).
+    if(flags & PTE_W){
+      // update parent PTE: clear PTE_W
+      *pte = PA2PTE(pa) | (flags & ~PTE_W) | PTE_V;
+
+      // flush any stale translations for the parent (important on RISC-V)
+      // We don't necessarily need a full sfence for every page, but call once
+      // after modifying the parent's PTEs would be fine. Call here to be safe.
+      sfence_vma();
+    }
+
+    // map the same physical page into the child's page table
+    // child's permissions = parent's flags, but without PTE_W (COW)
+    uint64 child_flags = (flags & ~PTE_W);
+
+    if(mappages(new, i, PGSIZE, pa, child_flags) != 0){
+      // on error, unmap pages we mapped so far
+      uvmunmap(new, 0, i / PGSIZE, 0); // do_free = 0; decrement refcounts below
+      // need to decrement any refcounts we incremented before error
+      // We can't easily walk what we incremented here; simpler: fall through to err
+      goto err;
+    }
+
+    // increase refcount of physical page (we now have two mappings to it)
+    kref_inc(pa);
+  }
+
+  return 0;
+
+ err:
+  // unmap previously mapped child pages and decrement their refcounts.
+  // uvmunmap with do_free=1 will call kref_dec (we change uvmunmap below
+  // to use kref_dec instead of unconditional kfree).
+  uvmunmap(new, 0, PGROUNDUP(sz)/PGSIZE, 1);
   return -1;
 }
 

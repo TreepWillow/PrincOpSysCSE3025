@@ -267,13 +267,25 @@ kfork(void)
   if((np = allocproc()) == 0){
     return -1;
   }
+  // --- Juan: Just replacing which version of uvm copy fork uses --- //
+  // Copy user memory from parent to child.
+  if(uvmcopy_cow(p->pagetable, np->pagetable, p->sz) < 0){
+    freeproc(np);
+    release(&np->lock);
+    return -1;
+  }
 
+  /*
+    original: 
   // Copy user memory from parent to child.
   if(uvmcopy(p->pagetable, np->pagetable, p->sz) < 0){
     freeproc(np);
     release(&np->lock);
     return -1;
   }
+  */
+
+  
   np->sz = p->sz;
 
   // copy saved user registers.
