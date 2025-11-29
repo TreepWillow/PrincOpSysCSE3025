@@ -29,7 +29,7 @@ struct {
 void
 refmgr_init(void)
 {
-  initlock(&refmgr.lock, "refmgr");
+  initlock(&refmgr.lock, "refmgr"); 
   // initially zeroed; but initialize explicitly if desired
   for (int i = 0; i < (PHYSTOP / PGSIZE); i++)
     refmgr.refcount[i] = 0;
@@ -85,7 +85,7 @@ kref_dec(uint64 pa)
   }
 }
 
-// --- Juan: --- //
+// --------
 
 void
 kinit()
@@ -110,21 +110,67 @@ freerange(void *pa_start, void *pa_end)
 void
 kfree(void *pa)
 {
-  struct run *r;
-
+  // -- Juan: changed so wont free pages with refcount > 0-- // 
   if(((uint64)pa % PGSIZE) != 0 || (char*)pa < end || (uint64)pa >= PHYSTOP)
     panic("kfree");
 
-  // Fill with junk to catch dangling refs.
+  int idx = pa2idx((uint64)pa);
+  acquire(&kmem.lock);
+
+  // only free if refcount == 0
+  if(kmem.refcount[idx] != 0) {
+    release(&kmem.lock);
+    return; 
+  }
+
+  // Safe to add back to free list
+  struct run *r;
   memset(pa, 1, PGSIZE);
 
-  r = (struct run*)pa;
+  //r = (struct run*)pa;
 
-  acquire(&kmem.lock);
+  //acquire(&kmem.lock);
   r->next = kmem.freelist;
   kmem.freelist = r;
   release(&kmem.lock);
 }
+
+// --- Juan: --- //
+// Convert PA -> index
+static inline int
+pa2idx(uint64 pa)
+{
+  return pa / PGSIZE;
+}
+
+// increment refernce count
+void
+kref_inc(uint64 pa)
+{
+  int idx = pa2idx(pa);
+
+  acquire(&kmem.lock);
+  kmem.refcount[idx]++;
+  release(&kmem.lock);
+}
+
+// decrement reference count
+void
+kref_dec(uint64 pa)
+{
+  int idx = pa2idx(pa);
+  int rc;
+
+  acquire(&kmem.lock);
+  kmem.refcount[idx]--;
+  rc = kmem.refcount[idx];
+  release(&kmem.lock);
+
+  if(rc == 0){
+    kfree((void*)pa);
+  }
+}
+
 
 // Allocate one 4096-byte page of physical memory.
 // Returns a pointer that the kernel can use.
@@ -140,7 +186,13 @@ kalloc(void)
     kmem.freelist = r->next;
   release(&kmem.lock);
 
-  if(r)
+  if(r) { // --- Juan: set refcount to 1 --- //
     memset((char*)r, 5, PGSIZE); // fill with junk
+
+    int idx = pa2idx((uint64)r);
+    kmem.refcount[idx]=1; 
+
+  }
+
   return (void*)r;
 }

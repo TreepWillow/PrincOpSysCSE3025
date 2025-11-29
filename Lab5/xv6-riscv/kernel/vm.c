@@ -518,12 +518,72 @@ copyinstr(pagetable_t pagetable, char *dst, uint64 srcva, uint64 max)
 uint64
 vmfault(pagetable_t pagetable, uint64 va, int read)
 {
+  // --- Juan: Allow COW page-faults --- //
   uint64 mem;
   struct proc *p = myproc();
+  pte_t *pte;
+  uint64 pa; 
 
+  // invalid address
   if (va >= p->sz)
     return 0;
+
+  
   va = PGROUNDDOWN(va);
+
+  // Look up the PTE but do not allocate new pt pages
+  pte = walk(pagetable, va, 0);
+  if(pte == 0)
+    return 0;
+
+  // -- Case 1: Allocation fault -- //
+  if ((*pte & PTE_V) == 0 ) {
+    mem = (uint64)kalloc();
+    if(mem == 0)
+      return 0; 
+    memset((void *)mem, 0, PGSIZE);
+    if(mappages(pagetable, va, PGSIZE, mem, PTE_W | PTE_U | PTE_R) != 0) {
+      kfree((void *)mem);
+      return 0; 
+    }
+    return mem; 
+  }
+
+  // page is mapped
+  pa = PTE2PA(*pte);
+
+  // -- Case 2: Cow Write Fault -- //
+  if (read == 0) { // write access
+    int cow = (*pte & PTE_COW);
+
+    if (cow && !(*pte & PTE_W)) {
+      // allocate new page
+      char *mem = kalloc();
+      if(mem == 0)
+        return 0;
+
+      // copy old page into new page
+      memmove(mem, (void *)pa, PGSIZE);
+
+      // decrement old page refcount 
+      kref_dec(pa);
+
+      // Install new writable mapping 
+      *pte = PA2PTE(mem) | PTE_R | PTE_W | PTE_U | PTE_V;
+
+      // flush TLB
+      sfence_vma();
+
+      return (unit64)mem;
+    }
+    // Attempted write to a truly read-only page -> kill process
+    if (!(*pte & PTE_W))
+      return 0; 
+  }
+  // read fault or non-fault
+  return pa; 
+
+  /*
   if(ismapped(pagetable, va)) {
     return 0;
   }
@@ -536,6 +596,7 @@ vmfault(pagetable_t pagetable, uint64 va, int read)
     return 0;
   }
   return mem;
+  */
 }
 
 int
