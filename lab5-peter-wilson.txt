@@ -1,0 +1,31 @@
+ESTIMATE: 
+----------------------------------------------------------------------------------------
+Date	    StTime	    TimeSp	    LabPrt	    Work Completed
+11/29/25    10:30pm	    1:30	    1	        Reading over the instructions and Team's code
+11/30/25    01:30am	    ????	    1	        Fixing bugs in reference count code and added PTE_COW flag.
+
+-----------------------------------------------------------------------------------------
+TOTAL: 
+
+Difficulties:
+- E1: refmgr is never defined. Is it supposed to be a structure name like kmem is?
+    - Defined the structure. Can be better if it is consolidated into kmem
+- E1: Question: does return 0 kill the process when running vmfault()
+- E1: The PTE_COW flag is being used for dertrminig if a page is COW but the Lab says to use PTE_RSW
+- E1: There are more than one definition for kref_inc and kref_dec in kalloc.c. Is this intentional?
+- E1: Question: is the lab section for copyout() asking us to have copyout() allocate a new page when it finds a COW or that it should return -1 if the page is not already newly allocated?
+
+
+How to make a syscall
+- in User add a .c file
+- In makeFile add in UPROGS the .c file name
+- in user.h add prototype
+- in usys.pl add entry
+- in syscall.h add a #define for the syscall
+- in sysproc.c add the syscall code
+- in syscall.c add syscall to array and prototype
+- edit other files if needed (like proc.c when kfork needs to be edited or proc.h when you need to add a varible)
+
+Summary
+
+

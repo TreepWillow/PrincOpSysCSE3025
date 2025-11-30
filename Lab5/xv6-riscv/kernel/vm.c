@@ -428,6 +428,10 @@ copyout(pagetable_t pagetable, uint64 dstva, char *src, uint64 len)
     if((*pte & PTE_W) == 0)
       return -1;
       
+    // --- Peter ---
+    // Add Page fault trap here and potentially the new page allocation
+    // TODO
+
     n = PGSIZE - (dstva - va0);
     if(n > len)
       n = len;
@@ -574,7 +578,7 @@ vmfault(pagetable_t pagetable, uint64 va, int read)
       // flush TLB
       sfence_vma();
 
-      return (unit64)mem;
+      return (uint64)mem; // --- Peter ---// Fixed misspeling of uint64
     }
     // Attempted write to a truly read-only page -> kill process
     if (!(*pte & PTE_W))

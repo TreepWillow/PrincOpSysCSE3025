@@ -361,6 +361,10 @@ typedef uint64 *pagetable_t; // 512 PTEs
 #define PTE_X (1L << 3)
 #define PTE_U (1L << 4) // user can access
 
+// --- Peter --- //
+// Adding to have flag to know if it is Copy On Write
+#define PTE_COW (1L << 5) // I dont know if the 1L << 5 is correct need to test
+
 // shift a physical address to the right place for a PTE.
 #define PA2PTE(pa) ((((uint64)pa) >> 12) << 10)
 
