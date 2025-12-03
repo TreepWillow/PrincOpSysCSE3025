@@ -8,6 +8,11 @@
 #include "proc.h"
 #include "fs.h"
 
+// ---- Juan: uvmcopy modified for uvmcopy_cow ---- //
+// forward declarations (provided by kalloc.c)
+extern void kref_inc(uint64 pa);
+extern void kref_dec(uint64 pa);
+
 /*
  * the kernel's page table.
  */
@@ -327,9 +332,6 @@ uvmcopy(pagetable_t old, pagetable_t new, uint64 sz)
 }
 
 // ---- Juan: uvmcopy modified for uvmcopy_cow ---- //
-// forward declarations (provided by kalloc.c)
-extern void kref_inc(uint64 pa);
-extern void kref_dec(uint64 pa);
 
 int
 uvmcopy_cow(pagetable_t old, pagetable_t new, uint64 sz)

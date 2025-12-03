@@ -6,6 +6,9 @@
 #include "proc.h"
 #include "defs.h"
 
+
+extern int uvmcopy_cow(pagetable_t old, pagetable_t new, uint64 sz); // --- Peter --- //
+
 struct cpu cpus[NCPU];
 
 struct proc proc[NPROC];

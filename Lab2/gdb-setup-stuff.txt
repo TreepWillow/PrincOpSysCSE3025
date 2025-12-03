@@ -1,6 +1,0 @@
-
-make qemu-gdb
-
-gdb-multiarch kernel/kernel
-target remote localhost:26000
-source .gdbinit

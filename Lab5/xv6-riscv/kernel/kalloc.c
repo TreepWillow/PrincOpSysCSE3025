@@ -136,7 +136,7 @@ kfree(void *pa)
   struct run *r;
   memset(pa, 1, PGSIZE);
 
-  //r = (struct run*)pa;
+  r = (struct run*)pa;
 
   //acquire(&kmem.lock);
   r->next = kmem.freelist;
@@ -144,41 +144,7 @@ kfree(void *pa)
   release(&kmem.lock);
 }
 
-// --- Juan: --- //
-// Convert PA -> index
-static inline int
-pa2idx(uint64 pa)
-{
-  return pa / PGSIZE;
-}
 
-// increment refernce count
-void
-kref_inc(uint64 pa)
-{
-  int idx = pa2idx(pa);
-
-  acquire(&kmem.lock);
-  kmem.refcount[idx]++;
-  release(&kmem.lock);
-}
-
-// decrement reference count
-void
-kref_dec(uint64 pa)
-{
-  int idx = pa2idx(pa);
-  int rc;
-
-  acquire(&kmem.lock);
-  kmem.refcount[idx]--;
-  rc = kmem.refcount[idx];
-  release(&kmem.lock);
-
-  if(rc == 0){
-    kfree((void*)pa);
-  }
-}
 
 
 // Allocate one 4096-byte page of physical memory.

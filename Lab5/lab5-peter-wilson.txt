@@ -3,6 +3,7 @@ ESTIMATE:
 Date	    StTime	    TimeSp	    LabPrt	    Work Completed
 11/29/25    10:30pm	    1:30	    1	        Reading over the instructions and Team's code
 11/30/25    01:30am	    2:00	    1	        Fixing bugs in reference count code and added PTE_COW flag.
+12/2/25     07:00pm     ????        1           
 
 -----------------------------------------------------------------------------------------
 TOTAL: 
@@ -14,7 +15,8 @@ Difficulties:
 - E1: The PTE_COW flag is being used for dertrminig if a page is COW but the Lab says to use PTE_RSW
 - E1: There are more than one definition for kref_inc and kref_dec in kalloc.c. Is this intentional?
 - E1: Question: is the lab section for copyout() asking us to have copyout() allocate a new page when it finds a COW or that it should return -1 if the page is not already newly allocated?
-
+- E1: make file error make: *** No rule to make target 'mkfs/mkfs.c', needed by 'mkfs/mkfs'.  Stop.
+    - removed mkfs from .gitignore file
 
 How to make a syscall
 - in User add a .c file
@@ -27,5 +29,4 @@ How to make a syscall
 - edit other files if needed (like proc.c when kfork needs to be edited or proc.h when you need to add a varible)
 
 Summary
-
 
