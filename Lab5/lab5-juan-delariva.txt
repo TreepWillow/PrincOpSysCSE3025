@@ -1,0 +1,12 @@
+ESTIMATE: 
+----------------------------------------------------------------------------------------
+Date	    StTime	    TimeSp	    LabPrt	    Work Completed
+11/25/25    1:00pm	    5:30	    1		    Importing cowtest. Adding uvmcopy_cow and changes to kalloc. 
+11/26/25    1:25am	    4:00	    1		    Additional changes to kalloc and changes in vm.c. 
+12/28/25    1:15pm          6:00            1		    Changes in riscv.h and vm.c. 
+
+-----------------------------------------------------------------------------------------
+TOTAL:
+
+Difficulties:
+One of the biggest difficulties was getting our custom PTE_COW to function with the code. This required numerous hours of reserach and debugging to understand the issues that were present. Additionally, there are now difficulties with having the program now pass the test that are in cowtest. It's currently stopping at the second iteration of simple test. 
