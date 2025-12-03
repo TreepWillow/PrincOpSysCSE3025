@@ -17,6 +17,15 @@ Difficulties:
 - E1: Question: is the lab section for copyout() asking us to have copyout() allocate a new page when it finds a COW or that it should return -1 if the page is not already newly allocated?
 - E1: make file error make: *** No rule to make target 'mkfs/mkfs.c', needed by 'mkfs/mkfs'.  Stop.
     - removed mkfs from .gitignore file
+    - The lab in the repo got corrupted and removed files so we had to reclone the xv6 and migrate the code.
+- E1: usertrap is causing a panic:
+    usertrap(): unexpected scause 0xf pid=3
+                sepc=0x854 stval=0x4f88
+    usertrap(): unexpected scause 0xf pid=2
+                sepc=0x2 stval=0x4f88
+    usertrap(): unexpected scause 0xf pid=1
+                sepc=0x77a stval=0x3f68
+    panic: init exiting
 
 How to make a syscall
 - in User add a .c file

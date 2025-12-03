@@ -357,7 +357,8 @@ uvmcopy_cow(pagetable_t old, pagetable_t new, uint64 sz)
     // and map the child read-only as well (clear PTE_W).
     if(flags & PTE_W){
       // update parent PTE: clear PTE_W
-      *pte = PA2PTE(pa) | (flags & ~PTE_W) | PTE_V;
+      //*pte = PA2PTE(pa) | (flags & ~PTE_W) | PTE_V;
+      *pte = PA2PTE(pa) | ((flags & ~PTE_W) | PTE_COW) | PTE_V;
 
       // flush any stale translations for the parent (important on RISC-V)
       // We don't necessarily need a full sfence for every page, but call once
@@ -367,7 +368,7 @@ uvmcopy_cow(pagetable_t old, pagetable_t new, uint64 sz)
 
     // map the same physical page into the child's page table
     // child's permissions = parent's flags, but without PTE_W (COW)
-    uint64 child_flags = (flags & ~PTE_W);
+    uint64 child_flags = (flags & ~PTE_W) | PTE_COW;
 
     if(mappages(new, i, PGSIZE, pa, child_flags) != 0){
       // on error, unmap pages we mapped so far
@@ -575,7 +576,11 @@ vmfault(pagetable_t pagetable, uint64 va, int read)
       kref_dec(pa);
 
       // Install new writable mapping 
-      *pte = PA2PTE(mem) | PTE_R | PTE_W | PTE_U | PTE_V;
+      //*pte = PA2PTE(mem) | PTE_R | PTE_COW | PTE_W | PTE_U | PTE_V;
+      
+      uint64 flags = PTE_FLAGS(*pte);
+      flags = (flags & ~PTE_COW) | PTE_W;
+      *pte = PA2PTE(mem) | flags;
 
       // flush TLB
       sfence_vma();
