@@ -1,12 +1,12 @@
-ESTIMATE: 
+ESTIMATE: 12hrs
 ----------------------------------------------------------------------------------------
 Date	    StTime	    TimeSp	    LabPrt	    Work Completed
 11/29/25    10:30pm	    1:30	    1	        Reading over the instructions and Team's code
 11/30/25    01:30am	    2:00	    1	        Fixing bugs in reference count code and added PTE_COW flag.
-12/2/25     07:00pm     ????        1           
+12/2/25     07:00pm     5:00        1           trying to test code before adding in copyout code
 
 -----------------------------------------------------------------------------------------
-TOTAL: 
+TOTAL: 8hrs
 
 Difficulties:
 - E1: refmgr is never defined. Is it supposed to be a structure name like kmem is?
@@ -48,3 +48,4 @@ How to make a syscall
 
 Summary
 
+Not complete but almost done. We ran into a lot of errors when making this including corrupted code that put us back

@@ -1,0 +1,15 @@
+Files that were edited:
+- kalloc.c
+    - reference management stuff
+- proc.c
+    - kfork update
+- vm.c
+    - uvmcopy_cow
+    - external refences to kref_inc and kref_dec
+    - vmfault
+- riscv.h
+    - added the PTE_COW flag
+- added cowtest
+    - added the file
+- makeFile 
+    - added user command
