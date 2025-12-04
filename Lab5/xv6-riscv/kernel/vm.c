@@ -427,13 +427,32 @@ copyout(pagetable_t pagetable, uint64 dstva, char *src, uint64 len)
     }
 
     pte = walk(pagetable, va0, 0);
+
+    // --- Peter --- //
+    // If COW page then first allocate a new page and copy it before it can write to it
+    if ((*pte & PTE_COW) != 0) {
+      // allocate new page
+      char *mem = kalloc();
+      if(mem == 0)
+        return -1;
+      // copy old page into new page
+      memmove(mem, (void *)pa0, PGSIZE);
+      // decrement old page refcount 
+      kref_dec(pa0);
+      // Install new writable mapping 
+      uint64 flags = PTE_FLAGS(*pte);
+      flags = (flags & ~PTE_COW) | PTE_W;
+      *pte = PA2PTE(mem) | flags;
+      // flush TLB
+      sfence_vma();
+      pa0 = (uint64)mem; // point to the new page
+
+    }
+
+
     // forbid copyout over read-only user text pages.
     if((*pte & PTE_W) == 0)
       return -1;
-      
-    // --- Peter ---
-    // Add Page fault trap here and potentially the new page allocation
-    // TODO
 
     n = PGSIZE - (dstva - va0);
     if(n > len)
