@@ -13,8 +13,8 @@ Difficulties:
 - E1: refmgr is never defined. Is it supposed to be a structure name like kmem is?
     - Defined the structure. Can be better if it is consolidated into kmem
 - E1: Question: does return 0 kill the process when running vmfault()
-- E1: The PTE_COW flag is being used for dertrminig if a page is COW but the Lab says to use PTE_RSW
-- E1: There are more than one definition for kref_inc and kref_dec in kalloc.c. Is this intentional?
+- E1: Question: The PTE_COW flag is being used for dertrminig if a page is COW but the Lab says to use PTE_RSW
+- E1: Question: There are more than one definition for kref_inc and kref_dec in kalloc.c. Is this intentional?
 - E1: Question: is the lab section for copyout() asking us to have copyout() allocate a new page when it finds a COW or that it should return -1 if the page is not already newly allocated?
 - E1: make file error make: *** No rule to make target 'mkfs/mkfs.c', needed by 'mkfs/mkfs'.  Stop.
     - removed mkfs from .gitignore file
@@ -33,23 +33,19 @@ Difficulties:
 - E1: copyout not working on usertests
     - was a problem with uvmcopy_cow not using flags right
 - E1: reparent2 test is giving usertrap
-    -
+    test reparent2: usertrap(): unexpected scause 0xf pid=3114
+            sepc=0x519e stval=0x11e48
+    usertrap(): unexpected scause 0xf pid=16
+            sepc=0x519e stval=0x11e68
 
-
-
-How to make a syscall
-- in User add a .c file
-- In makeFile add in UPROGS the .c file name
-- in user.h add prototype
-- in usys.pl add entry
-- in syscall.h add a #define for the syscall
-- in sysproc.c add the syscall code
-- in syscall.c add syscall to array and prototype
-- edit other files if needed (like proc.c when kfork needs to be edited or proc.h when you need to add a varible)
 
 Summary
-
-Not complete but almost done. We ran into a lot of errors when making this including corrupted code that put us back
+This project has been very chaotic. We only really got to have time to work on this together after break which put us behind.
+Then after we got some code made it ended up corrupting somehow so we had to do some version recovery to fix that.
+Then we had a lot of debugging of the code we made and updated it properly.
+It was very difficult and we unforunatly got stuck for multiple hours on the reparent2 test and could not figure out how to fix it.
+This lab has been very enlighening and difficult but I enjoyed learning more about OS.
+I wish we could have gotten past reparent2, I bet the other tests would have worked if we just got past reparent2.
 
 
 
