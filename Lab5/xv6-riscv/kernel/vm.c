@@ -421,13 +421,17 @@ copyout(pagetable_t pagetable, uint64 dstva, char *src, uint64 len)
   
     pa0 = walkaddr(pagetable, va0);
     if(pa0 == 0) {
-      return -1;
+      if ((pa0 = vmfault(pagetable, va0, 0)) == 0) {
+         return -1;
+      }
     }
 
     pte = walk(pagetable, va0, 0);
 
     if (pte == 0)
       return -1;
+
+
 
 
     //printf("copyout before COW: va0 0x%ld, pa0 0x%ld, pte 0x%ld\n", va0, pa0, *pte);

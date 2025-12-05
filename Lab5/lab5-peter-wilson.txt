@@ -29,13 +29,6 @@ Difficulties:
     panic: init exiting
     - We did not give the parent and child the PTE_COW flag in uvmcopy_cow
 - E1: the simple test #2 is causing a usertrap due to the memory not properly freeing:
-    simple: ok
-    simple: sbrk(89478484) failed
-    usertrap(): unexpected scause 0xf pid=2
-                sepc=0x2 stval=0x4f88
-    usertrap(): unexpected scause 0xf pid=1
-                sepc=0x77a stval=0x3f68
-    panic: init exiting
     - Was due to kmem and refmgr in kfree not being checked correctly
 - E1: copyout not working on usertests
     - moved COW section below initial readonly check in copyout
