@@ -25,24 +25,7 @@ struct {
   int refcount[PHYSTOP / PGSIZE]; 
 } kmem;
 
-// --- Peter --- //
-// refmgr was erroring so added this to define the refmgr. Can be better if we just consolidate the refmgr into kmem
-struct {
-  struct spinlock lock;
-  struct run *freelist;
-  // --- Juan: --- //
-  int refcount[PHYSTOP / PGSIZE]; 
-} refmgr;
 
-// --- Juan: --- ///
-void
-refmgr_init(void)
-{
-  initlock(&refmgr.lock, "refmgr"); 
-  // initially zeroed; but initialize explicitly if desired
-  for (int i = 0; i < (PHYSTOP / PGSIZE); i++)
-    refmgr.refcount[i] = 0;
-}
 
 /*
  * Convert physical address to refcount index
