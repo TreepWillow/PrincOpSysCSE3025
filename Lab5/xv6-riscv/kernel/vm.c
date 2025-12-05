@@ -421,9 +421,7 @@ copyout(pagetable_t pagetable, uint64 dstva, char *src, uint64 len)
   
     pa0 = walkaddr(pagetable, va0);
     if(pa0 == 0) {
-      if((pa0 = vmfault(pagetable, va0, 0)) == 0) {
-        return -1;
-      }
+      return -1;
     }
 
     pte = walk(pagetable, va0, 0);
@@ -435,6 +433,13 @@ copyout(pagetable_t pagetable, uint64 dstva, char *src, uint64 len)
     if((*pte & PTE_W) == 0)
       return -1;
 
+
+    if((*pte & PTE_COW) != 0) {
+      if((pa0 = vmfault(pagetable, va0, 0)) == 0) {
+        return -1;
+      }
+    }
+/*
     //printf("copyout before COW: va0 0x%ld, pa0 0x%ld, pte 0x%ld\n", va0, pa0, *pte);
     // --- Peter --- //
     // If COW page then first allocate a new page and copy it before it can write to it
@@ -458,7 +463,7 @@ copyout(pagetable_t pagetable, uint64 dstva, char *src, uint64 len)
     }
 
     //printf("copyout after COW: va0 0x%ld, pa0 0x%ld, pte 0x%ld\n", va0, pa0, *pte);
-
+*/
     
 
     n = PGSIZE - (dstva - va0);
