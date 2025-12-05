@@ -346,9 +346,7 @@ uvmcopy_cow(pagetable_t old, pagetable_t new, uint64 sz)
     if((*pte & PTE_V) == 0)
       continue;   // not mapped
 
-    // Only copy user mappings
-    if((*pte & PTE_U) == 0)
-      continue;
+    
 
     pa = PTE2PA(*pte);
     flags = PTE_FLAGS(*pte);
@@ -356,9 +354,11 @@ uvmcopy_cow(pagetable_t old, pagetable_t new, uint64 sz)
     // If the parent's mapping is writable, convert it to read-only in parent,
     // and map the child read-only as well (clear PTE_W).
     if(flags & PTE_W){
-      // update parent PTE: clear PTE_W
-      //*pte = PA2PTE(pa) | (flags & ~PTE_W) | PTE_V;
-      *pte = PA2PTE(pa) | ((flags & ~PTE_W) | PTE_COW) | PTE_V;
+      // Clear write bit in parent PTE and set COW bit.
+      *pte = (*pte & ~PTE_W) | PTE_COW;
+
+      // Clear write bit and set COW bit in child's mapping too.
+      flags = (flags & ~PTE_W) | PTE_COW;
 
       // flush any stale translations for the parent (important on RISC-V)
       // We don't necessarily need a full sfence for every page, but call once
@@ -366,11 +366,8 @@ uvmcopy_cow(pagetable_t old, pagetable_t new, uint64 sz)
       sfence_vma();
     }
 
-    // map the same physical page into the child's page table
-    // child's permissions = parent's flags, but without PTE_W (COW)
-    uint64 child_flags = (flags & ~PTE_W) | PTE_COW;
-
-    if(mappages(new, i, PGSIZE, pa, child_flags) != 0){
+  
+    if(mappages(new, i, PGSIZE, pa, flags) != 0){
       // on error, unmap pages we mapped so far
       uvmunmap(new, 0, i / PGSIZE, 0); // do_free = 0; decrement refcounts below
       // need to decrement any refcounts we incremented before error
@@ -419,57 +416,63 @@ copyout(pagetable_t pagetable, uint64 dstva, char *src, uint64 len)
     if(va0 >= MAXVA)
       return -1;
   
-    pa0 = walkaddr(pagetable, va0);
-    if(pa0 == 0) {
-      if ((pa0 = vmfault(pagetable, va0, 0)) == 0) {
-         return -1;
-      }
-    }
+    // do not need anymore
+    // pa0 = walkaddr(pagetable, va0);
+    // if(pa0 == 0) {
+    //   if ((pa0 = vmfault(pagetable, va0, 0)) == 0) {
+    //      return -1;
+    //   }
+    // }
 
     pte = walk(pagetable, va0, 0);
 
-    if (pte == 0)
+    if(pte == 0 || (*pte & PTE_U) == 0 || (*pte & PTE_V) == 0)
       return -1;
 
-
-
-
-    //printf("copyout before COW: va0 0x%ld, pa0 0x%ld, pte 0x%ld\n", va0, pa0, *pte);
-    // --- Peter --- //
-    // If COW page then first allocate a new page and copy it before it can write to it
-    if ((*pte & PTE_COW) != 0) {
+    // forbid true read-only page
+    if ((*pte & PTE_COW) == 0 && (*pte & PTE_W) == 0)
+      return -1;
+    
+    // Handle COW pages that have not been copied yet
+    if (!(*pte & PTE_W) && (*pte & PTE_COW)) {
+      uint64 pa = PTE2PA(*pte);
+      
       // allocate new page
       char *mem = kalloc();
       if(mem == 0)
         return -1;
+
       // copy old page into new page
-      memmove(mem, (void *)pa0, PGSIZE);
+      memmove(mem, (char*)pa, PGSIZE);
+      
       // decrement old page refcount 
-      kref_dec(pa0);
+      kref_dec(pa);
+      
       // Install new writable mapping 
       uint64 flags = PTE_FLAGS(*pte);
       flags = (flags & ~PTE_COW) | PTE_W;
+
       *pte = PA2PTE(mem) | flags;
+
       // flush TLB
       sfence_vma();
-      pa0 = (uint64)mem; // point to the new page
-
+      
     }
 
-    //printf("copyout after COW: va0 0x%ld, pa0 0x%ld, pte 0x%ld\n", va0, pa0, *pte);
-
-    // forbid copyout over read-only user text pages.
-    if((*pte & PTE_W) == 0)
+    // Now obtain the physical address for this VA.
+    pa0 = walkaddr(pagetable, va0);
+    if(pa0 == 0)
       return -1;
 
     n = PGSIZE - (dstva - va0);
     if(n > len)
       n = len;
+
     memmove((void *)(pa0 + (dstva - va0)), src, n);
 
     len -= n;
     src += n;
-    dstva = va0 + PGSIZE;
+    dstva += n;
   }
   return 0;
 }
