@@ -60,11 +60,11 @@ void
 kref_inc(uint64 pa)
 {
   int idx = pa2idx(pa);
-  acquire(&refmgr.lock);
+  acquire(&kmem.lock);
   // sanity bounds check
   if (idx >= 0 && idx < (PHYSTOP / PGSIZE))
-    refmgr.refcount[idx]++;
-  release(&refmgr.lock);
+    kmem.refcount[idx]++;
+  release(&kmem.lock);
 }
 
 /*
@@ -77,16 +77,16 @@ kref_dec(uint64 pa)
   int idx = pa2idx(pa);
   int rc = 0;
 
-  acquire(&refmgr.lock);
+  acquire(&kmem.lock);
   if (idx >= 0 && idx < (PHYSTOP / PGSIZE)){
-    if (refmgr.refcount[idx] > 0)
-      refmgr.refcount[idx]--;
-    rc = refmgr.refcount[idx];
+    if (kmem.refcount[idx] > 0)
+      kmem.refcount[idx]--;
+    rc = kmem.refcount[idx];
   } else {
     // out of range: treat as immediate free
     rc = 0;
   }
-  release(&refmgr.lock);
+  release(&kmem.lock);
 
   if (rc == 0) {
     // actually free the underlying page
@@ -101,6 +101,8 @@ kinit()
 {
   initlock(&kmem.lock, "kmem");
   freerange(end, (void*)PHYSTOP);
+  for (int i = 0; i < (PHYSTOP / PGSIZE); i++)
+    kmem.refcount[i] = 0;
 }
 
 void
