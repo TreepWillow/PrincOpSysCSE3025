@@ -354,10 +354,10 @@ uvmcopy_cow(pagetable_t old, pagetable_t new, uint64 sz)
     // If the parent's mapping is writable, convert it to read-only in parent,
     // and map the child read-only as well (clear PTE_W).
     if(flags & PTE_W){
-      // Clear write bit in parent PTE and set COW bit.
+      // add COW bit and clear write bit in parent's PTE
       *pte = (*pte & ~PTE_W) | PTE_COW;
 
-      // Clear write bit and set COW bit in child's mapping too.
+      // clear the child's write bit and add COW bit
       flags = (flags & ~PTE_W) | PTE_COW;
 
       // flush any stale translations for the parent (important on RISC-V)

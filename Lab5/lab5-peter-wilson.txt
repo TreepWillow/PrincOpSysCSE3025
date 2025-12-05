@@ -31,8 +31,9 @@ Difficulties:
 - E1: the simple test #2 is causing a usertrap due to the memory not properly freeing:
     - Was due to kmem and refmgr in kfree not being checked correctly
 - E1: copyout not working on usertests
-    - moved COW section below initial readonly check in copyout
-- E1: 
+    - was a problem with uvmcopy_cow not using flags right
+- E1: reparent2 test is giving usertrap
+    -
 
 
 
