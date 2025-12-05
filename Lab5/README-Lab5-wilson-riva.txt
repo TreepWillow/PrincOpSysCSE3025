@@ -6,7 +6,8 @@ Files that were edited:
 - vm.c
     - uvmcopy_cow
     - external refences to kref_inc and kref_dec
-    - vmfault
+    - vmfault handel COW
+    - copyout handel COW
 - riscv.h
     - added the PTE_COW flag
 - added cowtest
